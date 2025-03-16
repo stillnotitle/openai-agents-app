@@ -1,0 +1,14 @@
+name = "openai-agents-app"
+main = "worker/index.js"
+compatibility_date = "2023-12-01"
+
+[site]
+bucket = ".open-next/assets"
+
+[build]
+command = "npm run build:worker"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "openai-agents-app"
+database_id = "your-database-id-here" # デプロイ時に実際のIDに置き換える
