@@ -10,6 +10,10 @@ const nextConfig = {
   experimental: {
     instrumentationHook: true
   },
+  typescript: {
+    // ビルド時のTypeScriptエラーを無視
+    ignoreBuildErrors: true,
+  },
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,

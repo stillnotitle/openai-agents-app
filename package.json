@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm install --legacy-peer-deps typescript @types/react @types/react-dom && NODE_OPTIONS='--max-old-space-size=4096' next build",
-    "build:worker": "npm install --legacy-peer-deps typescript @types/react @types/react-dom && NODE_OPTIONS='--max-old-space-size=4096' next build",
+    "build": "npm install --legacy-peer-deps && npm install -g typescript && NODE_OPTIONS='--max-old-space-size=4096' next build",
+    "build:worker": "npm install --legacy-peer-deps && npm install -g typescript && NODE_OPTIONS='--max-old-space-size=4096' next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -36,5 +36,8 @@
     "typescript": "^5.3.3",
     "eslint": "^8.47.0",
     "eslint-config-next": "^14.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.3.3"
   }
 }
