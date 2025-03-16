@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
-import OpenAIAgents from 'openai-agents';
+import * as OpenAIAgents from 'openai-agents';
 
 /**
  * エージェントとチャットするAPIエンドポイント
