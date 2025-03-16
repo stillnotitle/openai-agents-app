@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm install --legacy-peer-deps && NODE_OPTIONS='--max-old-space-size=4096' next build",
-    "build:worker": "npm install --legacy-peer-deps && NODE_OPTIONS='--max-old-space-size=4096' next build",
+    "build": "npm install --legacy-peer-deps typescript @types/react @types/react-dom && NODE_OPTIONS='--max-old-space-size=4096' next build",
+    "build:worker": "npm install --legacy-peer-deps typescript @types/react @types/react-dom && NODE_OPTIONS='--max-old-space-size=4096' next build",
     "start": "next start",
     "lint": "next lint"
   },
