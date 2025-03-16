@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
-import * as OpenAIAgents from 'openai-agents';
 
 /**
  * エージェントとチャットするAPIエンドポイント
@@ -39,41 +38,26 @@ export async function POST(
       apiKey: apiKey,
     });
 
-    // OpenAI Agents SDKのエージェントを作成
-    const agent = new OpenAIAgents.Agent({
-      name: agentDefinition.name,
-      instructions: agentDefinition.instructions,
-      tools: agentDefinition.tools.map(tool => {
-        // ツールの種類に応じて適切なツールを作成
-        // 実際の実装では、各ツールの具体的な設定が必要
-        if (tool.type === 'hosted') {
-          // OpenAIのホステッドツール（例: WebSearch）
-          return {
-            name: tool.name,
-            description: tool.description,
-            // ホステッドツールの設定をここに追加
-          };
-        } else if (tool.type === 'function') {
-          // 関数ツール
-          return {
-            name: tool.name,
-            description: tool.description,
-            // 関数ツールの設定をここに追加
-          };
-        } else if (tool.type === 'agent') {
-          // エージェントツール
-          return {
-            name: tool.name,
-            description: tool.description,
-            // エージェントツールの設定をここに追加
-          };
+    // OpenAI APIを直接使用してアシスタントを実行
+    const assistantResponse = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        {
+          role: "system",
+          content: agentDefinition.instructions
+        },
+        {
+          role: "user",
+          content: message
         }
-        return null;
-      }).filter(Boolean) // nullを除外
+      ],
+      temperature: 0.7,
     });
 
-    // エージェントを実行
-    const result = await OpenAIAgents.Runner.run_sync(agent, message);
+    // 応答を取得
+    const result = {
+      final_output: assistantResponse.choices[0].message.content || "応答がありません。"
+    };
 
     // 応答を返す
     return NextResponse.json({

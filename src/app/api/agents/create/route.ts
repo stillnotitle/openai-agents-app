@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
-import * as OpenAIAgents from 'openai-agents';
 
 /**
  * エージェント作成APIエンドポイント
@@ -68,13 +67,10 @@ export async function POST(request: NextRequest) {
     const agentConfig = JSON.parse(completion.choices[0].message.content || '{}');
 
     try {
-      // openai-agents SDKを使用してエージェントを検証
-      // ここでエージェント設定が有効かどうかを確認
-      const agent = new OpenAIAgents.Agent({
-        name: agentConfig.name,
-        instructions: agentConfig.instructions,
-        tools: convertToolsFormat(agentConfig.tools || [])
-      });
+      // エージェント設定を検証（APIを使用せず単純な検証）
+      if (!agentConfig.name || !agentConfig.instructions) {
+        throw new Error('必須フィールドが不足しています');
+      }
 
       // エージェントが正常に作成できた場合
       // 生成されたエージェント設定にIDと日時を追加
@@ -104,27 +100,15 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * ツール設定をopenai-agents SDKの形式に変換
+ * ツール設定を検証し、有効なものだけを返す
  */
-function convertToolsFormat(tools: any[]) {
-  return tools.map(tool => {
-    if (tool.type === 'hosted') {
-      // ホステッドツールの場合、openai-agentsの形式に合わせる
-      return {
-        name: tool.name,
-        description: tool.description,
-        // 簡易的な実装のため、実際のホステッドツールとして機能しない
-      };
-    } else if (tool.type === 'function') {
-      // 関数ツールの場合
-      return {
-        name: tool.name,
-        description: tool.description,
-        function: async () => 'この機能はデモ用に簡略化されています'
-      };
-    }
-    return null;
-  }).filter(Boolean);
+function validateTools(tools: any[]) {
+  return tools.filter(tool => 
+    tool && 
+    typeof tool.name === 'string' && 
+    typeof tool.description === 'string' &&
+    ['hosted', 'function', 'agent'].includes(tool.type)
+  );
 }
 
 /**
