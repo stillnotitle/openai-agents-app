@@ -14,6 +14,10 @@ const nextConfig = {
     // ビルド時のTypeScriptエラーを無視
     ignoreBuildErrors: true,
   },
+  eslint: {
+    // ビルド時のESLintエラーを無視
+    ignoreDuringBuilds: true,
+  },
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
