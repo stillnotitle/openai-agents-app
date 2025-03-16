@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
-import { Agent } from 'openai-agents';
+import OpenAIAgents from 'openai-agents';
 
 /**
  * エージェント作成APIエンドポイント
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     try {
       // openai-agents SDKを使用してエージェントを検証
       // ここでエージェント設定が有効かどうかを確認
-      const agent = new Agent({
+      const agent = new OpenAIAgents.Agent({
         name: agentConfig.name,
         instructions: agentConfig.instructions,
         tools: convertToolsFormat(agentConfig.tools || [])

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
-import { Agent, Runner } from 'openai-agents';
+import OpenAIAgents from 'openai-agents';
 
 /**
  * エージェントとチャットするAPIエンドポイント
@@ -40,7 +40,7 @@ export async function POST(
     });
 
     // OpenAI Agents SDKのエージェントを作成
-    const agent = new Agent({
+    const agent = new OpenAIAgents.Agent({
       name: agentDefinition.name,
       instructions: agentDefinition.instructions,
       tools: agentDefinition.tools.map(tool => {
@@ -73,7 +73,7 @@ export async function POST(
     });
 
     // エージェントを実行
-    const result = await Runner.run_sync(agent, message);
+    const result = await OpenAIAgents.Runner.run_sync(agent, message);
 
     // 応答を返す
     return NextResponse.json({
